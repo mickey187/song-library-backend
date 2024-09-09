@@ -29,11 +29,15 @@ const register = async (req, res) => {
 
       // Generate a JWT token for the user
       const token = generateToken(newUser);
+      const userData = newUser.toJSON();
+      userData.token = token;
       return res.status(201).json({
         status: "success",
         statusCode: 201,
         message: "user created successfully",
-        token: token,
+        data: {
+          user: userData
+        },
       });
     }else{
         throw new Error( `error creating new user`)
@@ -62,7 +66,7 @@ const login =  async(req, res) => {
       const token = generateToken(user);
       user.token = token
       const userData = user.toJSON();
-      userData.token = token
+      userData.token = token;
       console.log("userData", userData);
      
       if (!token) {
